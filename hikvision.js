@@ -180,10 +180,14 @@ hikvision.prototype.nightProfile = function () {
 function handleData(self, data) {
 	parser.parseString(data, function(err, result) {
 		if (result) {
-			var code = result['EventNotificationAlert']['eventType'][0]
-			var action = result['EventNotificationAlert']['eventState'][0]
-			var index = parseInt(result['EventNotificationAlert']['channelID'][0])
-			var count = parseInt(result['EventNotificationAlert']['activePostCount'][0])
+			if(result['EventNotificationAlert'] === undefined) {
+				console.log('node-hikvision-api/hikvision.js: result[EventNotificationAlert] undefined');
+			} else {
+				var code = result['EventNotificationAlert']['eventType'][0]
+				var action = result['EventNotificationAlert']['eventState'][0]
+				var index = parseInt(result['EventNotificationAlert']['channelID'][0])
+				var count = parseInt(result['EventNotificationAlert']['activePostCount'][0])
+				}
 
 			// give codes returned by camera prettier and standardized description
 			if (code === 'IO')            code = 'AlarmLocal';
